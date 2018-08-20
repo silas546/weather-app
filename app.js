@@ -17,18 +17,17 @@ const argv = yargs
 .alias('help', 'h')
 .argv;
 
-// return geocode.geocodeAddress(argv.a, (errorMessage, results) => {
-//   if (errorMessage) {
-//     console.log(errorMessage);
-//   } else {
-//     console.log(JSON.stringify(results, undefined, 2));
-//   }
-// });
-
-weather.getWeather(36.4, -105.6, (errorMsg, weatherResults) => {
-  if (errorMsg) {
-    console.log(errorMsg);
+return geocode.geocodeAddress(argv.a, (errorMessage, results) => {
+  if (errorMessage) {
+    console.log(errorMessage);
   } else {
-    console.log(JSON.stringify(weatherResults, undefined, 2));
+    console.log(results.address);
+    weather.getWeather(results.latitude, results.longitude, (errorMsg, weatherResults) => {
+      if (errorMsg) {
+        console.log(errorMsg);
+      } else {
+        console.log(`It's currently ${weatherResults.temperature}. It feels like ${weatherResults.apparentTemperature}.`);
+      }
+    });
   }
 });
